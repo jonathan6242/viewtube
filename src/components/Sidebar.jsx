@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { toast } from "react-toastify"
 import { selectUser } from "../slices/userSlice"
 import "./Sidebar.css"
 import SidebarOption from "./SidebarOption"
@@ -21,7 +22,7 @@ function Sidebar() {
             />
           </Link>
         ) : (
-          <div onClick={() => {alert('You must sign in to view liked videos.')}}>
+          <div onClick={() => {toast.info('You must sign in to view liked videos.', {theme: "colored"})}}>
             <SidebarOption
               icon={<i className="fa-solid fa-thumbs-up"></i>}
               text="Liked Videos"
@@ -38,7 +39,7 @@ function Sidebar() {
             />
           </Link>
         ) : (
-          <div onClick={() => {alert('You must sign in to view subscriptions.')}}>
+          <div onClick={() => {toast.info('You must sign in to view subscriptions.', {theme: "colored"})}}>
             <SidebarOption
               icon={<i className="fa-solid fa-rectangle-list"></i>}
               text="Subscriptions"

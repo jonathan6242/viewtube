@@ -1,9 +1,10 @@
+import { toast } from "react-toastify"
 import "./SidebarOption.css"
 
 function SidebarOption({ icon, text, notallowed }) {
   const handleClick = () => {
     if(notallowed) {
-      window.alert('Sorry, this feature is not available yet.')
+      toast.info('Sorry, this feature is not available yet.', {theme: "colored"})
     }
   }
 

@@ -44,6 +44,7 @@
   color: #ff0000;
   font-size: 28px;
   margin-left: 16px;
+  margin-right: 4px;
 }
 
 .fa-youtube::before {
@@ -71,19 +72,32 @@
 .navbar__input--container {
   border: 1px solid var(--bg-color-secondary);
   display: flex;
-  width: 50vw;
-  max-width: 600px;
-  min-width: 180px;
+  width: 100%;
   position: relative;
 }
 
-@media(max-width: 1000px) {
-  .navbar__input--container {
-    width: 25vw;
+.navbar__middle {
+  width: 100%;
+  max-width: 600px;
+  min-width: 180px;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar__middle form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media(max-width: 1150px) {
+  .navbar__middle {
+    max-width: 400px;
   }  
 }
 
 .navbar__input--search {
+  cursor: pointer;
   position: absolute;
   border-left: 1px solid var(--bg-color-secondary);
   border-right: 1px solid var(--bg-color-secondary);
@@ -107,6 +121,10 @@
 }
 
 .navbar__right {
+  display: flex;
+}
+
+.navbar__right > a {
   display: flex;
 }
 
@@ -184,18 +202,27 @@
     display: none;
   }
   .fa-youtube {
-    font-size: 48px;
+    font-size: 40px;
   }
 }
 
 @media(max-width: 500px) {
   .navbar {
     flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .navbar__middle {
+    max-width: 200px;
+  }
+  .fa-youtube {
+    margin-left: 8px;
   }
   .navbar__right {
-    margin-top: 16px;
     width: 100%;
     justify-content: flex-end;
+  }
+  .navbar__middle {
+    margin: 0;
   }
   .navbar__create {
     margin-right: 16px;

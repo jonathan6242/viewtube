@@ -2,6 +2,7 @@ import { collection, doc, getDocs, onSnapshot, orderBy, query, updateDoc, where 
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../components/VideoList.css"
 import VideoThumbnail from "../components/VideoThumbnail";
 import { db } from "../firebase";
@@ -51,7 +52,7 @@ function UserPage() {
 
   const subscribe = async () => {
     if(!user) {
-      alert("You must sign in to subscribe.")
+      toast.info("You must sign in to subscribe.", {theme: "colored"})
       return;
     }
     let subscribers = channel?.subscribers;

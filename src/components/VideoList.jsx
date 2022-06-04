@@ -9,33 +9,62 @@ import { selectUser } from "../slices/userSlice";
 function VideoList({ term, setVideosByUser }) {
   const user = useSelector(selectUser)
   const [videos, setVideos] = useState('');
-  const [searchVideos, setSearchVideos] = useState('');
+  const [searchVideos, setSearchVideos] = useState(null);
   const [filterValue, setFilterValue] = useState('NEWEST');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // Real-time listener for videos collection
   useEffect(() => {
-    const getVideos = async () => {
-      setLoading(true)
-      const docSnap = await getDocs(
-        query(
-          collection(db, "videos"),
-          orderBy("timestamp", "desc"),
-          limit(64)
-        )
-      )
-      let data = docSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
-      data = data.sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds);
-      if(!videos) {
+    // if(videos) {
+    //   return;
+    // }
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "videos"),
+        orderBy("timestamp", "desc"),
+        limit(24)
+      ),
+      async (querySnapshot) => {
+        setLoading(true)
+        // const docSnap = await getDocs(
+        //   query(
+        //     collection(db, "videos"),
+        //     limit(24),
+        //     orderBy("timestamp", "desc"),
+        //   )
+        // )
+        let data = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+        // data = data.sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds);
+        // console.log('Local storage set');
         localStorage.setItem("videos", JSON.stringify(data))
         setVideos(data)
         if(term !== "") {
           setSearchVideos(data.filter(video => video?.title?.toLowerCase().includes(term.toLowerCase())))
         }
+        setLoading(false)
       }
-      setLoading(false)
-    }
-    getVideos();
+    )
+    return unsubscribe;
+    // const getVideos = async () => {
+    //   setLoading(true)
+    //   const docSnap = await getDocs(
+    //     query(
+    //       collection(db, "videos"),
+    //       limit(24),
+    //       orderBy("timestamp", "desc"),
+    //     )
+    //   )
+    //   let data = docSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
+    //   // data = data.sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds);
+    //   console.log('Local storage set');
+    //   localStorage.setItem("videos", JSON.stringify(data))
+    //   setVideos(data)
+    //   if(term !== "") {
+    //     setSearchVideos(data.filter(video => video?.title?.toLowerCase().includes(term.toLowerCase())))
+    //   }
+    //   setLoading(false)
+    // }
+    // getVideos();
   }, [])
 
   useEffect(() => {

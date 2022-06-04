@@ -5,9 +5,8 @@ import { selectUser } from "./slices/userSlice"
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth'
 import { login, logout } from "./slices/userSlice";
 import { useEffect, useState } from "react";
-import VideoForm from "./components/VideoForm"
 import VideoList from "./components/VideoList";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import VideoPage from "./pages/VideoPage";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -15,6 +14,10 @@ import LikedVideos from "./pages/LikedVideos";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import Subscriptions from "./pages/Subscriptions";
 import UserPage from "./pages/UserPage";
+import CreateVideo from "./pages/CreateVideo";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import EditVideo from "./pages/EditVideo";
 
 function App() {
   const user = useSelector(selectUser)
@@ -34,8 +37,6 @@ function App() {
   // Get user on page load and store in state
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      console.log('OnAuthStateChanged')
-      console.log(user ? user.displayName : 'No user')
       let users = await getUsers();
       localStorage.setItem("users", JSON.stringify(users));
       // if(!localStorage.getItem("users") || !JSON.parse(localStorage.getItem("users"))) {
@@ -46,7 +47,6 @@ function App() {
       //   users = JSON.parse(localStorage.getItem("users"));
       // }
       if(user) {
-        console.log(users)
         let currentUser = users.find(item => item.uid === user.uid);
         if(!currentUser) {
           console.log("New user:", user.displayName)
@@ -59,14 +59,14 @@ function App() {
           }
           await addDoc(collection(db, "users"), currentUser);
           users = await getUsers()
-          console.log("New users:", users)
+          // console.log("New users:", users)
           localStorage.setItem("users", JSON.stringify(users))
         }
         dispatch(login(currentUser))
       }
       setTimeout(() => {
         setUserLoading(false)
-      }, 1000)
+      }, 500)
     });
   }, [])
 
@@ -74,6 +74,8 @@ function App() {
   const signin = () => {
     signInWithPopup(auth, provider)
       .then(async ({ user }) => {
+        toast.success('Successfully signed in.', {theme: 'colored'})
+        document.body.classList.remove('modal--open')
         // if(user) {
         //   let users = await getUsers();
         //   const userExists = users.filter(item => item.uid === user.uid).length > 0;
@@ -105,6 +107,7 @@ function App() {
     signOut(auth)
       .then(() => {
         dispatch(logout())
+        toast.success('Successfully signed out.', {theme: 'colored'})
       })
   }
 
@@ -133,6 +136,8 @@ function App() {
                 <Route path='/users/:uid'
                   element={<UserPage />}
                 />
+                <Route path='/createvideo' element={<CreateVideo videosByUser={videosByUser} />} />
+                <Route path='/editvideo/:id' element={<EditVideo />} />
               </Routes>
               <Sidebar />
             </main>
@@ -140,9 +145,9 @@ function App() {
               user && (
                 <div className="modal">
                   <div className="modal__user">
-                    <figure className="modal__profile">
+                    <Link to={`/users/${user.uid}`} className="modal__profile">
                       <img src={user && user.photoURL} alt="Profile" />
-                    </figure>
+                    </Link>
                     <h2>{user && user.displayName}</h2>
                   </div>
                   <div className="modal__buttons">
@@ -154,12 +159,9 @@ function App() {
                 </div>    
               )
             }
-            
-          <VideoForm
-            videosByUser={videosByUser}
-          />
         </>
       </div>
+      <ToastContainer limit={3} />
     </Router>
   );
 }

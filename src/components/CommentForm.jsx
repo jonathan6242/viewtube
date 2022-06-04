@@ -1,6 +1,7 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react"
 import { useSelector } from "react-redux"
+import { toast } from "react-toastify";
 import { db } from "../firebase";
 import { selectUser } from "../slices/userSlice";
 import "./CommentForm.css"
@@ -13,7 +14,7 @@ function CommentForm({ videoID }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if(!user) {
-      alert('You must sign in to comment.')
+      toast.info('You must sign in to comment.', {theme: "colored"})
       return;
     }
     const newComment = {

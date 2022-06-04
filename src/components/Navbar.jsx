@@ -8,7 +8,7 @@ function Navbar({ signin, setTerm, userLoading }) {
   const navigate = useNavigate()
   const user = useSelector(selectUser)
   const [searchText, setSearchText] = useState('')
-  const [darkTheme, setDarkTheme] = useState(false)
+  const [darkTheme, setDarkTheme] = useState(true)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,9 +20,12 @@ function Navbar({ signin, setTerm, userLoading }) {
     if(localStorage.getItem("darktheme") === "on") {
       document.body.classList.add("dark-theme")
       setDarkTheme(true)
-    } else {
+    } else if(localStorage.getItem("darktheme" === "off")) {
       document.body.classList.remove("dark-theme")
       setDarkTheme(false)
+    } else {
+      document.body.classList.add("dark-theme")
+      setDarkTheme(true)
     }
   }, [])
 
@@ -34,10 +37,10 @@ function Navbar({ signin, setTerm, userLoading }) {
   }
   const toggleTheme = () => {
     document.body.classList.toggle('dark-theme')
-    if(localStorage.getItem("darktheme") === "") {
+    if(localStorage.getItem("darktheme") === "off") {
       localStorage.setItem("darktheme", "on")
     } else {
-      localStorage.setItem("darktheme", "")
+      localStorage.setItem("darktheme", "off")
     }
     setDarkTheme(!darkTheme)
   }
@@ -54,7 +57,7 @@ function Navbar({ signin, setTerm, userLoading }) {
         <Link onClick={() => {setSearchText(''); setTerm('')}} to='/'>
           <i className="fa-brands fa-youtube">
           </i>
-          <h2 className="navbar__title">Youtube</h2>
+          <h2 className="navbar__title">ViewTube</h2>
         </Link>
       </div>
       <div className="navbar__middle">
@@ -91,10 +94,12 @@ function Navbar({ signin, setTerm, userLoading }) {
               </button>
               {
                 user ? (
-                  <button className="navbar__create" onClick={toggleForm}>
-                    <i className="fa-solid fa-video"></i>
-                    <span>Create video</span>
-                  </button>
+                  <Link to='/createvideo'>
+                    <button className="navbar__create">
+                      <i className="fa-solid fa-video"></i>
+                      <span>Create video</span>
+                    </button>
+                  </Link>
                 ) : (
                   <button className="signin" onClick={signin}>
                     <i className="fa-solid fa-user"></i>

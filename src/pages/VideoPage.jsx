@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import "./VideoPage.css"
 import { useSelector } from "react-redux";
 import { selectUser } from "../slices/userSlice";
-import { doc, updateDoc } from "firebase/firestore"
+import { deleteDoc, doc, Timestamp, updateDoc } from "firebase/firestore"
 import { db } from "../firebase";
 import CommentList from "../components/CommentList"
 import VideoThumbnail from "../components/VideoThumbnail";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import { toast } from "react-toastify";
 
 function VideoPage() {
   const user = useSelector(selectUser)
@@ -17,6 +19,8 @@ function VideoPage() {
   const [ratio, setRatio] = useState('')
   const [loading, setLoading] = useState(true);
   const [commentsVisible, setCommentsVisible] = useState(true)
+  const [deleting, setDeleting] = useState(false);
+  const navigate = useNavigate();
 
   // Retrieve selected video from local storage
   useEffect(() => {
@@ -67,7 +71,7 @@ function VideoPage() {
   // Like video
   const likeVideo = async () => {
     if(!user) {
-      alert('You must sign in to like videos.');
+      toast.info('You must sign in to like videos.', {theme: "colored"});
       return;
     }
     let newLikes = video.likedBy;
@@ -80,7 +84,10 @@ function VideoPage() {
         newDislikes = newDislikes.filter(item => item !== user.uid)
       }
     }
-    const videoCopy = {...video}
+    const videoCopy = {
+      ...video, 
+      timestamp: new Timestamp(video.timestamp.seconds, video.timestamp.nanoseconds)
+    }
     setVideo((previousVideo) => {
       return {
         ...previousVideo,
@@ -101,7 +108,7 @@ function VideoPage() {
   // Dislike video
   const dislikeVideo = async () => {
     if(!user) {
-      alert('You must sign in to dislike videos.');
+      toast.info('You must sign in to dislike videos.', {theme: "colored"});
       return;
     }
     let newDislikes = video.dislikedBy;
@@ -114,7 +121,10 @@ function VideoPage() {
         newLikes = newLikes.filter(item => item !== user.uid)
       }
     }
-    const videoCopy = {...video}
+    const videoCopy = {
+      ...video, 
+      timestamp: new Timestamp(video.timestamp.seconds, video.timestamp.nanoseconds)
+    }
     setVideo((previousVideo) => {
       return {
         ...previousVideo,
@@ -135,7 +145,7 @@ function VideoPage() {
   // Subscribe to a user
   const subscribe = async () => {
     if(!user) {
-      alert("You must sign in to subscribe.")
+      toast.info("You must sign in to subscribe.", {theme: "colored"})
       return;
     }
     let subscribers = videoCreator?.subscribers;
@@ -161,7 +171,10 @@ function VideoPage() {
   useEffect(() => {
     const updateSubscribers = async () => {
       if(videoCreator && video) {
-        const videoCopy = {...video}
+        const videoCopy = {
+          ...video, 
+          timestamp: new Timestamp(video.timestamp.seconds, video.timestamp.nanoseconds)
+        }
         setVideo({
           ...videoCopy,
           user: videoCreator
@@ -186,7 +199,8 @@ function VideoPage() {
                 doc(db, "videos", vid.id),
                 {
                   ...vid,
-                  user: videoCreator
+                  user: videoCreator,
+                  timestamp: new Timestamp(vid?.timestamp?.seconds, vid?.timestamp?.nanoseconds)
                 }
               )
             }
@@ -204,8 +218,28 @@ function VideoPage() {
     return t;
   }
 
+  const deleteVideo = async () => {
+    if(window.confirm('Are you sure you want to delete?')) {
+      if(user?.uid !== video?.user?.uid) {
+        navigate('/')
+        toast.error('Cannot delete another user\'s video', {theme: "colored"});
+        return;
+      }
+      setDeleting(true);
+      await deleteDoc(doc(db, "videos", video.id))
+      navigate('/')
+      setDeleting(false)
+      toast.success('Successfully deleted video.', {theme: "colored"})
+    }
+  }
+
   return (
     <div className="video-page">
+      {
+        deleting && (
+          <Spinner />
+        )
+      }
       {
         video && (
           <>
@@ -269,6 +303,18 @@ function VideoPage() {
                             <div className="video-page__dislikes--bar"></div>
                           </div>
                         </div>
+                        {
+                          (user?.uid === video?.user?.uid || user?.uid === "27sO7M2yPfPEkpCa7tzP00e4euy2") && (
+                            <div id="video-page__buttons">
+                              <Link to={`/editvideo/${video?.id}`} className="edit">
+                                <i className="fa-solid fa-edit"></i>
+                              </Link>
+                              <button onClick={deleteVideo} className="delete">
+                                <i className="fa-solid fa-trash-can"></i>
+                              </button>
+                            </div>
+                          )
+                        }
                       </div>
                       <div className="video-page__description">
                         <div className="video-page__description--left">
