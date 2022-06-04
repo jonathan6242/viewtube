@@ -1,0 +1,35 @@
+.user__about {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 14px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user__about--left {
+  display: flex;
+  align-items: center;
+  margin-right: 24px;
+  margin-bottom: 16px;
+}
+
+.user__profile {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.user__info {
+  margin-left: 24px;
+  color: var(--text-color-primary)
+}
+
+.user__name {
+  margin-bottom: 4px;
+}

@@ -1,0 +1,8 @@
+.comment-form__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel {
+  margin-right: 4px;
+}

@@ -1,0 +1,92 @@
+.create .video-form__container {
+  visibility: visible;
+  opacity: 1;
+}
+
+.create .video-form {
+  transform: translateY(0);
+}
+
+.video-form__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  transition: all 300ms ease;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.video-form {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 640px;
+  padding: 48px;
+  padding-bottom: 96px;
+  background-color: #fff;
+  border-radius: 16px;
+  position: relative;
+  transition: all 500ms ease;
+  transform: translateY(100vh);
+}
+
+.video-form h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.video-form__inputs {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+}
+
+.video-form__inputs input {
+  font-size: 18px;
+  padding: 8px 16px;
+  margin: 8px 0;
+  font-weight: 500;
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+@media(max-width: 500px) {
+  .video-form__inputs {
+    width: 100%;
+  }
+  .video-form__inputs input {
+    font-size: 14px;
+  }
+}
+
+.video-form button {
+  margin-top: 24px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: transparent;
+  border-radius: 4px;
+  background: red;
+  color: white;
+  border: none;
+  font-weight: 700;
+  padding: 16px 32px;
+  transition: all 300ms ease;
+  font-size: 16px;
+}
+
+.video-form button:hover {
+  background-color: rgb(210, 0, 0);
+}
+
+.fa-times {
+  position: absolute;
+  cursor: pointer;
+  top: 16px;
+  right: 24px;
+  font-size: 32px;
+}
