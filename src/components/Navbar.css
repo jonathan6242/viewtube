@@ -65,9 +65,9 @@
   outline: none;
 }
 
-.navbar input:focus {
+/* .navbar input:focus {
   outline: 2px solid rgb(56, 125, 210);
-}
+} */
 
 .navbar__input--container {
   border: 1px solid var(--bg-color-secondary);
