@@ -169,32 +169,50 @@ function App() {
               </Routes>
               <Sidebar />
             </main>
-            {
-              user && (
-                <div className="modal">
+            <div className="modal">
+              {
+                user && (
                   <div className="modal__user">
                     <Link to={`/users/${user.uid}`} className="modal__profile">
                       <img src={user && user.photoURL} alt="Profile" />
                     </Link>
                     <h2>{user && user.displayName}</h2>
                   </div>
-                  <div className="modal__buttons">
-                    <button className="modal__button" onClick={signout}>
-                      <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                      Logout
+                )
+              }
+              <div className="modal__buttons">
+                {
+                  user ? (
+                    <>
+                      <button className="modal__button" onClick={() => {
+                        toggleModal();
+                        signout();
+                      }}>
+                        <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                        Sign Out
+                      </button>
+                      <Link to='/createvideo' onClick={toggleModal} className="modal__button mobile">
+                        <i className="fa-solid fa-video"></i>
+                        Create Video
+                      </Link>
+                    </>
+                  ) : (
+                    <button className="modal__button mobile" onClick={() => {
+                      toggleModal();
+                      signin();
+                    }}>
+                      <i className="fa-solid fa-user"></i>
+                      Sign In
                     </button>
-                    <Link to='/createvideo' onClick={toggleModal} className="modal__button mobile">
-                      <i className="fa-solid fa-video"></i>
-                      Create Video
-                    </Link>
-                    <button onClick={toggleTheme} className="modal__button mobile">
-                      <i className="fa-solid fa-circle-half-stroke"></i>
-                      Toggle Theme
-                    </button>
-                  </div>
-                </div>    
-              )
-            }
+                  )
+                }
+              
+                <button onClick={toggleTheme} className="modal__button mobile">
+                  <i className="fa-solid fa-circle-half-stroke"></i>
+                  Toggle Theme
+                </button>
+              </div>
+            </div>    
         </>
       </div>
       <ToastContainer limit={3} />

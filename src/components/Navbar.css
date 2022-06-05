@@ -251,10 +251,12 @@
 }
 
 @media(max-width: 768px) {
-  .navbar__create span {
+  .navbar__create span,
+  .signin span {
     display: none;
   }
-  .navbar__create i {
+  .navbar__create i,
+  .signin i {
     margin-right: 0;
   }
 }
@@ -271,7 +273,8 @@
   }
   .navbar__middle,
   .navbar__create,
-  .navbar__toggle {
+  .navbar__toggle,
+  .signin {
     display: none;
   }
 }
