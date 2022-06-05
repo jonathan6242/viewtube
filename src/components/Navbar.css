@@ -5,7 +5,8 @@
   padding: 16px;
   background-color: var(--bg-color-primary);
   color: var(--text-color-primary);
-  border-bottom: 1px solid var(--bg-color-secondary)
+  border-bottom: 1px solid var(--bg-color-secondary);
+  position: relative;
 }
 
 .fa-bars {
@@ -82,6 +83,7 @@
   min-width: 180px;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .navbar__middle form {
@@ -188,6 +190,66 @@
   font-size: 16px;
 }
 
+/* MOBILE SEARCHBAR */
+.navbar__input--toggle {
+  margin-right: 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 4px;
+  background: var(--bg-color-primary);
+  color: var(--text-color-primary);
+  border: none;
+  transition: all 300ms ease;
+  font-size: 24px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar__input--toggle i {
+  font-weight: 600;
+}
+
+.navbar__mobile.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.navbar__mobile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--bg-color-primary);
+  display: flex;
+}
+
+.navbar__mobile form {
+  width: 100%;
+  display: flex;
+}
+
+.navbar__mobile .navbar__mobile--back {
+  margin: 0 8px;
+}
+
+.navbar__mobile .navbar__mobile--search {
+  margin-right: 72px;
+}
+
+.navbar__mobile input {
+  background-color: var(--bg-color-primary);
+  color: var(--text-color-primary);
+  border-bottom: 4px solid var(--text-color-primary);
+  margin: 12px 8px 8px 0px;
+}
+
+.navbar__mobile input::placeholder {
+  color: var(--text-color-primary);
+  opacity: 0.8;
+}
+
 @media(max-width: 768px) {
   .navbar__create span {
     display: none;
@@ -204,6 +266,14 @@
   .fa-youtube {
     font-size: 40px;
   }
+  .navbar__input--toggle {
+    display: flex;
+  }
+  .navbar__middle,
+  .navbar__create,
+  .navbar__toggle {
+    display: none;
+  }
 }
 
 @media(max-width: 500px) {
@@ -211,22 +281,13 @@
     flex-wrap: wrap;
     row-gap: 8px;
   }
-  .navbar__middle {
-    max-width: 200px;
-  }
   .fa-youtube {
     margin-left: 8px;
   }
-  .navbar__right {
+  /* .navbar__right {
     width: 100%;
     justify-content: flex-end;
-  }
-  .navbar__middle {
-    margin: 0;
-  }
-  .navbar__create {
-    margin-right: 16px;
-  }
+  } */
   .video-page__statistics div {
     width: 100%;
   }

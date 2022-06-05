@@ -23,9 +23,9 @@ main {
   display: none;
 }
 
-@media(max-width: 500px) {
+@media(max-width: 600px) {
   .modal {
-    top: 144px; 
+    right: 0;
   }
 }
 
@@ -65,7 +65,7 @@ main {
   flex-direction: column;
 }
 
-.signout {
+.modal__button {
   display: flex;
   align-items: center;
   border: none;
@@ -76,11 +76,21 @@ main {
   cursor: pointer;
 }
 
-.signout:hover {
+.modal__button:hover {
   background-color: var(--bg-color-hover);
 }
 
-.signout i {
+.modal__button i {
   font-size: 20px;
   margin-right: 16px;
+}
+
+.modal__button.mobile {
+  display: none;
+}
+
+@media(max-width: 600px) {
+  .modal__button.mobile {
+    display: flex;
+  }
 }

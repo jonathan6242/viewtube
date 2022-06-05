@@ -26,6 +26,7 @@ function App() {
   const [userLoading, setUserLoading] = useState(true)
   const [videosByUser, setVideosByUser] = useState(0);
   const [signedIn, setSignedIn] = useState(false)
+  const [darkTheme, setDarkTheme] = useState(true)
 
   // Get users collection and store in state
   async function getUsers() {
@@ -111,11 +112,38 @@ function App() {
       })
   }
 
+  const toggleTheme = () => {
+    document.body.classList.toggle('dark-theme')
+    if(localStorage.getItem("darktheme") === "off") {
+      localStorage.setItem("darktheme", "on")
+    } else {
+      localStorage.setItem("darktheme", "off")
+    }
+    setDarkTheme(!darkTheme)
+  }
+  
+  useEffect(() => {
+    if(localStorage.getItem("darktheme") === "on") {
+      document.body.classList.add("dark-theme")
+      setDarkTheme(true)
+    } else if(localStorage.getItem("darktheme" === "off")) {
+      document.body.classList.remove("dark-theme")
+      setDarkTheme(false)
+    } else {
+      document.body.classList.add("dark-theme")
+      setDarkTheme(true)
+    }
+  }, [])
+
+  const toggleModal = () => {
+    document.body.classList.toggle('modal--open')
+  }
+
   return (
     <Router>
       <div className="App">
         <>
-          <Navbar signin={signin} setTerm={setTerm} userLoading={userLoading}/>
+          <Navbar signin={signin} setTerm={setTerm} userLoading={userLoading} toggleTheme={toggleTheme}/>
             <main>
               <Routes>
                 <Route path='/' element={(
@@ -151,9 +179,17 @@ function App() {
                     <h2>{user && user.displayName}</h2>
                   </div>
                   <div className="modal__buttons">
-                    <button className="signout" onClick={signout}>
+                    <button className="modal__button" onClick={signout}>
                       <i className="fa-solid fa-arrow-right-from-bracket"></i>
                       Logout
+                    </button>
+                    <Link to='/createvideo' onClick={toggleModal} className="modal__button mobile">
+                      <i className="fa-solid fa-video"></i>
+                      Create Video
+                    </Link>
+                    <button onClick={toggleTheme} className="modal__button mobile">
+                      <i className="fa-solid fa-circle-half-stroke"></i>
+                      Toggle Theme
                     </button>
                   </div>
                 </div>    

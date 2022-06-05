@@ -21,16 +21,19 @@
 
 .comment__author {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 8px;
 }
 
 .comment__author span {
   font-size: 18px;
   font-weight: bold;
+  white-space: nowrap;
 }
 
 .comment__date {
   color: gray;
+  display: inline;
 }
 
 .comment__text {

@@ -4,48 +4,30 @@ import { Link, useNavigate } from "react-router-dom"
 import { selectUser } from "../slices/userSlice"
 import "./Navbar.css"
 
-function Navbar({ signin, setTerm, userLoading }) {
+function Navbar({ signin, setTerm, userLoading, toggleTheme }) {
   const navigate = useNavigate()
   const user = useSelector(selectUser)
   const [searchText, setSearchText] = useState('')
-  const [darkTheme, setDarkTheme] = useState(true)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/')
+    // navigate('/')
     setTerm(searchText)
   }
 
-  useEffect(() => {
-    if(localStorage.getItem("darktheme") === "on") {
-      document.body.classList.add("dark-theme")
-      setDarkTheme(true)
-    } else if(localStorage.getItem("darktheme" === "off")) {
-      document.body.classList.remove("dark-theme")
-      setDarkTheme(false)
-    } else {
-      document.body.classList.add("dark-theme")
-      setDarkTheme(true)
-    }
-  }, [])
-
-  const handleClick = () => {
+  const toggleModal = () => {
     document.body.classList.toggle('modal--open')
   }
   const toggleForm = () => {
     document.body.classList.toggle('create')
   }
-  const toggleTheme = () => {
-    document.body.classList.toggle('dark-theme')
-    if(localStorage.getItem("darktheme") === "off") {
-      localStorage.setItem("darktheme", "on")
-    } else {
-      localStorage.setItem("darktheme", "off")
-    }
-    setDarkTheme(!darkTheme)
-  }
+
   const toggleSidebar = () => {
     document.querySelector('.sidebar').classList.toggle('visible');
+  }
+  const toggleNavbarMobile = () => {
+    console.log('togglenavbarmobile')
+    document.querySelector('.navbar__mobile').classList.toggle('hidden');
   }
 
   return (
@@ -107,7 +89,10 @@ function Navbar({ signin, setTerm, userLoading }) {
                   </button>
                 )
               }
-              <figure onClick={handleClick} className="navbar__profile">
+              <button onClick={toggleNavbarMobile} className="navbar__input--toggle">
+                <i className="fa-solid fa-search"></i>
+              </button>
+              <figure onClick={toggleModal} className="navbar__profile">
                 {
                   user ? (
                     <img src={user?.photoURL} alt="Profile" />
@@ -120,6 +105,22 @@ function Navbar({ signin, setTerm, userLoading }) {
           )
         }
        
+      </div>
+      <div className="navbar__mobile hidden">
+        <form onSubmit={handleSubmit}>
+          <button type="button" onClick={toggleNavbarMobile} className="navbar__mobile--back navbar__input--toggle">
+            <i className="fa-solid fa-arrow-left"></i>
+          </button>
+          <input
+            value={searchText}
+            onChange={(e) => {setSearchText(e.target.value)}}
+            type="text"
+            placeholder="Search YouTube"
+          />
+          <button type="submit" className="navbar__mobile--search navbar__input--toggle">
+            <i className="fa-solid fa-search"></i>
+          </button>
+        </form>
       </div>
     </div>
   )

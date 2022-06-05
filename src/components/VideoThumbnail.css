@@ -125,6 +125,18 @@ a {
   }
 }
 
+@media(max-width: 500px) {
+  .video-thumbnail__container {
+    padding: 0;
+  }
+  .video-thumbnail {
+    padding: 0;
+  }
+  .video-thumbnail__bottom {
+    padding: 16px;
+  }
+}
+
 .video-thumbnail__container.recommended {
   width: 100%;
   padding: 0;

@@ -21,12 +21,6 @@
   transform: translateX(0px);
 }
 
-@media(max-width: 500px) {
-  .sidebar {
-    top: -72px;
-  }
-}
-
 /* @media(max-width: 1000px) {
   .sidebar {
     display: none;
