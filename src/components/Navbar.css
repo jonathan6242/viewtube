@@ -277,6 +277,9 @@
   .signin {
     display: none;
   }
+  .navbar__skeleton--left {
+    display: none;
+  }
 }
 
 @media(max-width: 500px) {
