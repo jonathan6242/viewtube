@@ -36,10 +36,3 @@ body {
   top: 90px !important;
   right: 24px !important;
 }
-
-@media(max-width: 500px) {
-  .Toastify__toast-container--top-right {
-    top: 144px !important;
-    right: 24px !important;
-  }
-}
