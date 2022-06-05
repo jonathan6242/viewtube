@@ -115,7 +115,7 @@ function Navbar({ signin, setTerm, userLoading, toggleTheme }) {
             value={searchText}
             onChange={(e) => {setSearchText(e.target.value)}}
             type="text"
-            placeholder="Search YouTube"
+            placeholder="Search"
           />
           <button type="submit" className="navbar__mobile--search navbar__input--toggle">
             <i className="fa-solid fa-search"></i>
